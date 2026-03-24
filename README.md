@@ -3,7 +3,7 @@
 **Author:** Bazela  
 **Seat No:** B23110006020  
 **Section:** B, 3rd Year, 5th Semester  
-**University:** University of Karachi, UBIT
+
 
 ---
 
