@@ -1,16 +1,24 @@
-# React + Vite
+# Dove Diagonal Movement Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Author:** Bazela  
+**Seat No:** B23110006020  
+**Section:** B, 3rd Year, 5th Semester  
+**University:** University of Karachi, UBIT
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## How It Works
 
-## React Compiler
+1. **Initial Setup**
+   - The dove 🕊️ starts at a fixed position on the left side of the screen.
+   - The apple 🍎 is placed on the right side.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+2. **Click Event**
+   - When the user clicks the apple, the dove calculates the vector toward the apple.
 
-## Expanding the ESLint configuration
+3. **Vector-Based Diagonal Movement**
+   - Each frame calculates the remaining distance.
+   - The dove moves proportionally in X and Y directions to maintain a perfect diagonal.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+4. **Stop at Exact Position**
+   - When the dove reaches the apple’s exact center, the animation stops.
