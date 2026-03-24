@@ -15,6 +15,9 @@
 
 2. **Click Event**
    - When the user clicks the apple, the dove calculates the vector toward the apple.
+  
+**live link:**
+https://hci-diagonal-lab.vercel.app/
 
 3. **Vector-Based Diagonal Movement**
    - Each frame calculates the remaining distance.
