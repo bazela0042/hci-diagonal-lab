@@ -1,56 +1,41 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import "./App.css";
 
 export default function App() {
   const [dovePos, setDovePos] = useState({ x: 200, y: window.innerHeight * 0.7 });
-  const [moveDove, setMoveDove] = useState(false);
-  const [applePos, setApplePos] = useState({ x: 0, y: 0 });
+  const [isMoving, setIsMoving] = useState(false);
 
-  const appleRef = useRef(null);
+  const applePos = { x: window.innerWidth - 200, y: window.innerHeight * 0.2 };
 
-  // Step 1: Apple ki exact position nikalna
-  useEffect(() => {
-    if (appleRef.current) {
-      const rect = appleRef.current.getBoundingClientRect();
-      setApplePos({ x: rect.left, y: rect.top + rect.height / 2 }); // center Y
-    }
-  }, []);
+  const moveDove = () => {
+    if (isMoving) return; // prevent multiple clicks
+    setIsMoving(true);
 
-  // Step 2: Dove ko diagonal move karna
-  useEffect(() => {
-    if (!moveDove) return;
-
-    const speed = 5; // pixels per frame
-    const interval = setInterval(() => {
+    const step = () => {
       setDovePos((prev) => {
-        const deltaX = applePos.x - prev.x;
-        const deltaY = applePos.y - prev.y;
-        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        const dx = applePos.x - prev.x;
+        const dy = applePos.y - prev.y;
 
-        if (distance === 0) {
-          clearInterval(interval);
-          return prev;
+        // Stop when close enough
+        if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) {
+          setIsMoving(false);
+          return { x: applePos.x, y: applePos.y };
         }
 
-        // Exact remaining distance if close
-        const moveDist = distance < speed ? distance : speed;
-        const stepX = (deltaX / distance) * moveDist;
-        const stepY = (deltaY / distance) * moveDist;
-
-        const nextX = prev.x + stepX;
-        const nextY = prev.y + stepY;
-
-        // Stop interval if reached apple
-        if (nextX === applePos.x && nextY === applePos.y) {
-          clearInterval(interval);
-        }
-
-        return { x: nextX, y: nextY };
+        // Fractional movement for slow smooth motion
+        const fraction = 0.05; // very slow movement
+        return {
+          x: prev.x + dx * fraction,
+          y: prev.y + dy * fraction,
+        };
       });
-    }, 20);
 
-    return () => clearInterval(interval);
-  }, [moveDove, applePos]);
+      // Continue animation
+      requestAnimationFrame(step);
+    };
+
+    requestAnimationFrame(step);
+  };
 
   return (
     <div className="app-background">
@@ -59,7 +44,7 @@ export default function App() {
         style={{
           left: dovePos.x,
           top: dovePos.y,
-          transform: "translateY(-50%)",
+          transform: "translate(-50%, -50%)",
         }}
       >
         🕊️
@@ -67,8 +52,11 @@ export default function App() {
 
       <div
         className="apple"
-        ref={appleRef}
-        onClick={() => setMoveDove(true)}
+        style={{
+          left: applePos.x,
+          top: applePos.y,
+        }}
+        onClick={moveDove}
       >
         🍎
       </div>

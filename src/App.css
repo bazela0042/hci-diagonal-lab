@@ -6,13 +6,12 @@
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
+  overflow: hidden;
 }
 
 .dove {
   position: absolute;
-  left: 200px;
-  top: 70%;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
   font-size: 6rem;
   opacity: 0.95;
   color: #00ffff;
@@ -21,15 +20,15 @@
     0 0 20px #00ffff,
     0 0 30px #00ffff,
     0 0 40px #00ffff;
+  pointer-events: none; /* ignore clicks on dove */
 }
 
 .apple {
   position: absolute;
-  right: 200px;
-  top: 20%;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
   font-size: 4rem;
   color: red;
   text-shadow: 0 0 10px red, 0 0 20px red;
   cursor: pointer;
+  user-select: none;
 }
