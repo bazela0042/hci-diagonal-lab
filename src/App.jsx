@@ -2,36 +2,46 @@ import React, { useState } from "react";
 import "./App.css";
 
 export default function App() {
-  const [dovePos, setDovePos] = useState({ x: 200, y: window.innerHeight * 0.7 });
+  const [dovePos, setDovePos] = useState({
+    x: 200,
+    y: window.innerHeight * 0.7,
+  });
+
   const [isMoving, setIsMoving] = useState(false);
 
-  const applePos = { x: window.innerWidth - 200, y: window.innerHeight * 0.2 };
+  const applePos = {
+    x: window.innerWidth - 200,
+    y: window.innerHeight * 0.2,
+  };
 
   const moveDove = () => {
-    if (isMoving) return; // prevent multiple clicks
+    if (isMoving) return;
     setIsMoving(true);
 
-    const step = () => {
-      setDovePos((prev) => {
-        const dx = applePos.x - prev.x;
-        const dy = applePos.y - prev.y;
+    const start = { ...dovePos };
+    const duration = 2000; // 2 seconds
+    let startTime = null;
 
-        // Stop when close enough
-        if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) {
-          setIsMoving(false);
-          return { x: applePos.x, y: applePos.y };
-        }
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp;
 
-        // Fractional movement for slow smooth motion
-        const fraction = 0.05; // very slow movement
-        return {
-          x: prev.x + dx * fraction,
-          y: prev.y + dy * fraction,
-        };
-      });
+      const elapsed = timestamp - startTime;
+      let t = elapsed / duration;
 
-      // Continue animation
-      requestAnimationFrame(step);
+      // Clamp t between 0 and 1
+      t = Math.min(t, 1);
+
+      // ✅ ACTUAL LERP
+      const newX = (1 - t) * start.x + t * applePos.x;
+      const newY = (1 - t) * start.y + t * applePos.y;
+
+      setDovePos({ x: newX, y: newY });
+
+      if (t < 1) {
+        requestAnimationFrame(step);
+      } else {
+        setIsMoving(false);
+      }
     };
 
     requestAnimationFrame(step);
